@@ -78,21 +78,16 @@ def addStopConnection(analyzer, lastservice, service):
     """
     Adiciona las estaciones al grafo como vertices y arcos entre las
     estaciones adyacentes.
-
-    Los vertices tienen por nombre el identificador de la estacion
-    seguido de la ruta que sirve.  Por ejemplo:
-
-    75009-10
-
-    Si la estacion sirve otra ruta, se tiene: 75009-101
     """
     try:
-        origin = formatVertex(lastservice)
-        destination = formatVertex(service)
+        
+        origin = formatOriginVertex(lastservice)
+        destination = formatDestinationVertex(service)
         cleanServiceDistance(lastservice, service)
         longitudcable = service['cable_length'].split()[0].replace(',','')
-        distance = float(longitudcable)
-        distance = abs(distance)
+        #distance = float(longitudcable)
+        #distance = abs(distance)
+        distance = longitudcable
         addStop(analyzer, origin)
         addStop(analyzer, destination)
         addConnection(analyzer, origin, destination, distance)
@@ -243,9 +238,9 @@ def cleanServiceDistance(lastservice, service):
     distancia, se reemplaza con cero.
     """
     if service['cable_length'] == 'n.a':
-        service['cable_length'] = 0
+        service['cable_length'] = '0'
     if lastservice['cable_length'] == 'n.a':
-        lastservice['cable_length'] = 0
+        lastservice['cable_length'] = '0'
 
 
 def formatVertex(service):
@@ -257,6 +252,21 @@ def formatVertex(service):
     name = name + service['cable_id']
     return name
 
+def formatOriginVertex(connection):
+    """
+    Se formatea el nombrer del vertice con el id del landing point seguido del cable específico
+    """
+    name = connection['origin'] + '-'
+    name = name + connection['cable_id']
+    return name
+
+def formatDestinationVertex(connection):
+    """
+    Se formatea el nombrer del vertice con el id del landing point seguido del cable específico
+    """
+    name = connection['destination'] + '-'
+    name = name + connection['cable_id']
+    return name
 
 # ==============================
 # Funciones de Comparacion

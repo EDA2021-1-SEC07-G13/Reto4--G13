@@ -55,7 +55,7 @@ while True:
         cont = controller.init()
 
     elif int(inputs[0]) == 2:
-        print("\nCargando información de transporte de singapur ....")
+        print("\nCargando información ...")
         controller.loadServices(cont, servicefile)
         numedges = controller.totalConnections(cont)
         numvertex = controller.totalStops(cont)

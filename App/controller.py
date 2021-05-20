@@ -48,7 +48,7 @@ def loadServices(analyzer, servicesfile):
     servidas en una misma estación.
     """
     servicesfile = cf.data_dir + servicesfile
-    input_file = csv.DictReader(open(servicesfile, encoding="utf-8"),
+    input_file = csv.DictReader(open(servicesfile, encoding="utf-8-sig"),
                                 delimiter=",")
     lastservice = None
     for service in input_file:
