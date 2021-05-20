@@ -20,11 +20,12 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
-import config as cf
 import sys
-import controller
-from DISClib.ADT import list as lt
-assert cf
+import config
+import threading
+from App import controller
+from DISClib.ADT import stack
+assert config
 
 
 """
@@ -36,10 +37,11 @@ operación solicitada
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("1- Inicializar catálogo")
+    print("2- Cargar Informacion")
 
-catalog = None
+cont = None
+servicefile = 'connections.csv'
 
 """
 Menu principal
@@ -48,10 +50,19 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+        print("\nInicializando....")
+            # cont es el controlador que se usará de acá en adelante
+        cont = controller.init()
 
     elif int(inputs[0]) == 2:
-        pass
+        print("\nCargando información de transporte de singapur ....")
+        controller.loadServices(cont, servicefile)
+        numedges = controller.totalConnections(cont)
+        numvertex = controller.totalStops(cont)
+        print('Numero de vertices: ' + str(numvertex))
+        print('Numero de arcos: ' + str(numedges))
+        print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
+
 
     else:
         sys.exit(0)
